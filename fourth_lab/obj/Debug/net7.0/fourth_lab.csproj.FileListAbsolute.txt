@@ -1,0 +1,15 @@
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/fourth_lab.csproj.AssemblyReference.cache
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/fourth_lab.GeneratedMSBuildEditorConfig.editorconfig
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/fourth_lab.AssemblyInfoInputs.cache
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/fourth_lab.AssemblyInfo.cs
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/fourth_lab.csproj.CoreCompileInputs.cache
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/bin/Debug/net7.0/fourth_lab
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/bin/Debug/net7.0/fourth_lab.deps.json
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/bin/Debug/net7.0/fourth_lab.runtimeconfig.json
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/bin/Debug/net7.0/fourth_lab.dll
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/bin/Debug/net7.0/fourth_lab.pdb
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/fourth_lab.dll
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/refint/fourth_lab.dll
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/fourth_lab.pdb
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/fourth_lab.genruntimeconfig.cache
+/Users/pr1nc3/Projects/fourth_lab/fourth_lab/obj/Debug/net7.0/ref/fourth_lab.dll
