@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace fourth_lab
 {
@@ -75,6 +76,23 @@ namespace fourth_lab
             var content = Console.ReadLine();
 
             var file = new TextFile(filePath, content);
+
+            Console.WriteLine("Enter the name of the author:");
+            var author = Console.ReadLine();
+            file.SetAuthor(author);
+
+            Console.WriteLine("Enter the description:");
+            var description = Console.ReadLine();
+            file.SetDescription(description);
+
+            Console.WriteLine("Enter the tags (separated by commas):");
+            var tagsInput = Console.ReadLine();
+            var tags = tagsInput.Split(',').ToList();
+            file.SetTags(tags);
+
+            var memento = new TextFileMemento(file);
+            file.AddMemento(memento);
+
             file.SerializeToXml(filePath + ".xml");
 
             Console.WriteLine("File created successfully.");
@@ -94,10 +112,24 @@ namespace fourth_lab
                 var newContent = Console.ReadLine();
                 var previousContent = file.Content;
 
-                var memento = new TextFileMemento(filePath, previousContent);
+                var memento = new TextFileMemento(file);
                 file.AddMemento(memento);
 
                 file.Content = newContent;
+
+                Console.WriteLine("Enter the name of the author:");
+                var author = Console.ReadLine();
+                file.SetAuthor(author);
+
+                Console.WriteLine("Enter the description:");
+                var description = Console.ReadLine();
+                file.SetDescription(description);
+
+                Console.WriteLine("Enter the tags (separated by commas):");
+                var tagsInput = Console.ReadLine();
+                var tags = tagsInput.Split(',').ToList();
+                file.SetTags(tags);
+
                 file.SerializeToXml(filePath + ".xml");
 
                 Console.WriteLine("File edited successfully.");
@@ -105,6 +137,7 @@ namespace fourth_lab
             catch (FileNotFoundException)
             {
                 Console.WriteLine("File not found.");
+                return;
             }
         }
 
@@ -112,7 +145,7 @@ namespace fourth_lab
         {
             Console.WriteLine("Enter the path and name of the file to undo:");
             var filePath = Console.ReadLine();
-            
+
             try
             {
                 var file = TextFile.DeserializeFromXml(filePath + ".xml");
@@ -127,6 +160,10 @@ namespace fourth_lab
                 file.RemoveMemento(memento);
 
                 file.Content = memento.Content;
+                file.SetAuthor(memento.Author);
+                file.SetDescription(memento.Description);
+                file.SetTags(memento.Tags);
+
                 file.SerializeToXml(filePath + ".xml");
 
                 Console.WriteLine("Change undone successfully.");
@@ -136,6 +173,30 @@ namespace fourth_lab
                 Console.WriteLine("File not found.");
             }
         }
+
+
+        public static void SaveMementos(TextFile file)
+        {
+            var mementos = file.Mementos;
+            var filePath = $"{file.FilePath}.mementos.xml";
+            var serializer = new XmlSerializer(typeof(List<TextFileMemento>));
+
+            using (var writer = new StreamWriter(filePath))
+            {
+                serializer.Serialize(writer, mementos);
+            }
+        }
+
+        public static List<TextFileMemento> LoadMementos(string filePath)
+        {
+            var serializer = new XmlSerializer(typeof(List<TextFileMemento>));
+
+            using (var reader = new StreamReader(filePath))
+            {
+                return (List<TextFileMemento>)serializer.Deserialize(reader);
+            }
+        }
+
 
         static void SearchTextFiles()
         {

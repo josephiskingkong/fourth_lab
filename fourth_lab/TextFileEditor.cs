@@ -7,9 +7,10 @@ namespace fourth_lab
 {
     public class TextFileEditor
     {
-        private Dictionary<string, TextFileMemento> _mementos = new Dictionary<string, TextFileMemento>();
+        private Dictionary<string, Stack<TextFileMemento>> _mementos = new Dictionary<string, Stack<TextFileMemento>>();
         public TextFile OpenFile(string filePath)
         {
+
             if (!File.Exists(filePath))
             {
                 throw new FileNotFoundException($"File {filePath} not found.");
@@ -17,7 +18,14 @@ namespace fourth_lab
 
             var content = File.ReadAllText(filePath);
             var textFile = new TextFile(filePath, content);
-            _mementos[filePath] = textFile.Save();
+
+            if (!_mementos.TryGetValue(filePath, out Stack<TextFileMemento> mementos))
+            {
+                mementos = new Stack<TextFileMemento>();
+                _mementos[filePath] = mementos;
+            }
+
+            mementos.Push(textFile.Save());
 
             return textFile;
         }
@@ -25,15 +33,27 @@ namespace fourth_lab
         public void SaveFile(TextFile textFile)
         {
             File.WriteAllText(textFile.FilePath, textFile.Content);
-            _mementos[textFile.FilePath] = textFile.Save();
+
+            if (_mementos.TryGetValue(textFile.FilePath, out Stack<TextFileMemento> mementos))
+            {
+                mementos.Push(textFile.Save());
+            }
+            else
+            {
+                mementos = new Stack<TextFileMemento>();
+                mementos.Push(textFile.Save());
+                _mementos[textFile.FilePath] = mementos;
+            }
         }
 
         public void UndoChanges(TextFile textFile)
         {
-            if (_mementos.TryGetValue(textFile.FilePath, out TextFileMemento memento))
+            if (_mementos.TryGetValue(textFile.FilePath, out Stack<TextFileMemento> mementos) && mementos.Count > 1)
             {
-                textFile.Restore(memento);
+                mementos.Pop();
+                textFile.Restore(mementos.Peek());
             }
         }
     }
+
 }
