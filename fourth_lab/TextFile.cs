@@ -22,9 +22,9 @@ namespace fourth_lab
             Mementos = new List<TextFileMemento>();
         }
 
-        public TextFile(string filePath, string content)
+        public TextFile(string FilePath, string content)
         {
-            FilePath = filePath;
+            FilePath = FilePath;
             Content = content;
             Tags = new List<string>();
             Mementos = new List<TextFileMemento>();
@@ -32,62 +32,62 @@ namespace fourth_lab
 
         public TextFileMemento Save()
         {
-            var memento = new TextFileMemento(this);
-            Mementos.Add(memento);
-            return memento;
+            var Memento = new TextFileMemento(this);
+            Mementos.Add(Memento);
+            return Memento;
         }
 
-        public void Restore(TextFileMemento memento)
+        public void Restore(TextFileMemento Memento)
         {
-            Content = memento.Content;
-            Author = memento.Author;
-            Description = memento.Description;
-            Tags = memento.Tags;
+            Content = Memento.Content;
+            Author = Memento.Author;
+            Description = Memento.Description;
+            Tags = Memento.Tags;
         }
 
-        public void SetAuthor(string author)
+        public void SetAuthor(string Author)
         {
-            Author = author;
+            Author = Author;
         }
 
-        public void SetDescription(string description)
+        public void SetDescription(string Description)
         {
-            Description = description;
+            Description = Description;
         }
 
-        public void SetTags(List<string> tags)
+        public void SetTags(List<string> Tags)
         {
-            Tags = tags;
+            Tags = Tags;
         }
 
-        public void AddMemento(TextFileMemento memento)
+        public void AddMemento(TextFileMemento Memento)
         {
-            Mementos.Add(memento);
+            Mementos.Add(Memento);
         }
 
-        public void RemoveMemento(TextFileMemento memento)
+        public void RemoveMemento(TextFileMemento Memento)
         {
-            Mementos.Remove(memento);
+            Mementos.Remove(Memento);
         }
 
 
-        public void SerializeToXml(string filePath)
+        public void SerializeToXml(string FilePath)
         {
-            var serializer = new XmlSerializer(typeof(TextFile));
+            var Serializer = new XmlSerializer(typeof(TextFile));
 
-            using (var writer = new StreamWriter(filePath))
+            using (var Writer = new StreamWriter(FilePath))
             {
-                serializer.Serialize(writer, this);
+                Serializer.Serialize(Writer, this);
             }
         }
 
-        public static TextFile DeserializeFromXml(string filePath)
+        public static TextFile DeserializeFromXml(string FilePath)
         {
-            var serializer = new XmlSerializer(typeof(TextFile));
+            var Serializer = new XmlSerializer(typeof(TextFile));
 
-            using (var reader = new StreamReader(filePath))
+            using (var Reader = new StreamReader(FilePath))
             {
-                return (TextFile)serializer.Deserialize(reader);
+                return (TextFile)Serializer.Deserialize(Reader);
             }
         }
     }
@@ -107,33 +107,13 @@ namespace fourth_lab
             Tags = new List<string>();
         }
 
-        public TextFileMemento(TextFile file)
+        public TextFileMemento(TextFile File)
         {
-            Content = file.Content;
-            Author = file.Author;
-            Description = file.Description;
-            Tags = new List<string>(file.Tags);
+            Content = File.Content;
+            Author = File.Author;
+            Description = File.Description;
+            Tags = new List<string>(File.Tags);
         }
     }
 
-
-    public class TextFileSearcher
-    {
-        public List<string> SearchFiles(string directoryPath, string[] keywords)
-        {
-            var matchingFiles = new List<string>();
-
-            foreach (var file in Directory.GetFiles(directoryPath))
-            {
-                var fileContent = File.ReadAllText(file);
-
-                if (keywords.All(keyword => fileContent.Contains(keyword)))
-                {
-                    matchingFiles.Add(file);
-                }
-            }
-
-            return matchingFiles;
-        }
-    }
 }

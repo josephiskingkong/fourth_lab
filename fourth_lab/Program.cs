@@ -9,43 +9,43 @@ namespace fourth_lab
     {
         static void Main(string[] args)
         {
-            string directoryPath, keywordsInput;
+            string DirectoryPath, KeywordsInput;
 
             if (args.Length < 1)
             {
-                Console.WriteLine("Please enter the directory path:");
-                directoryPath = Console.ReadLine();
-                Console.WriteLine("Please enter the keywords (separated by commas):");
-                keywordsInput = Console.ReadLine();
+                Console.WriteLine("Please enter the Directory path:");
+                DirectoryPath = Console.ReadLine();
+                Console.WriteLine("Please enter the Keywords (separated by commas):");
+                KeywordsInput = Console.ReadLine();
             }
             else
             {
-                directoryPath = args[0];
-                keywordsInput = string.Join(",", args.Skip(1));
+                DirectoryPath = args[0];
+                KeywordsInput = string.Join(",", args.Skip(1));
             }
 
-            var keywords = keywordsInput.Split(',');
+            var Keywords = KeywordsInput.Split(',');
 
-            var searcher = new TextFileSearcher();
-            var matchingFiles = searcher.SearchFiles(directoryPath, keywords);
+            var Searcher = new TextFileSearcher();
+            var matchingFiles = Searcher.SearchFiles(DirectoryPath, Keywords);
 
-            foreach (var file in matchingFiles)
+            foreach (var File in matchingFiles)
             {
-                Console.WriteLine(file);
+                Console.WriteLine(File);
             }
 
             while (true)
             {
                 Console.WriteLine("\nChoose an action:");
-                Console.WriteLine("1. Create a new text file");
-                Console.WriteLine("2. Edit an existing text file");
-                Console.WriteLine("3. Undo last change in a text file");
-                Console.WriteLine("4. Search for text files");
+                Console.WriteLine("1. Create a new text File");
+                Console.WriteLine("2. Edit an existing text File");
+                Console.WriteLine("3. Undo last change in a text File");
+                Console.WriteLine("4. Search for text Files");
                 Console.WriteLine("5. Exit");
 
-                var choice = Console.ReadLine();
+                var Choice = Console.ReadLine();
 
-                switch (choice)
+                switch (Choice)
                 {
                     case "1":
                         CreateTextFile();
@@ -62,7 +62,7 @@ namespace fourth_lab
                     case "5":
                         return;
                     default:
-                        Console.WriteLine("Invalid choice, please try again.");
+                        Console.WriteLine("Invalid Choice, please try again.");
                         break;
                 }
             }
@@ -70,67 +70,67 @@ namespace fourth_lab
 
         static void CreateTextFile()
         {
-            Console.WriteLine("Enter the path and name of the new file:");
-            var filePath = Console.ReadLine();
-            Console.WriteLine("Enter the content of the new file:");
+            Console.WriteLine("Enter the path and name of the new File:");
+            var FilePath = Console.ReadLine();
+            Console.WriteLine("Enter the content of the new File:");
             var content = Console.ReadLine();
 
-            var file = new TextFile(filePath, content);
+            var File = new TextFile(FilePath, content);
 
             Console.WriteLine("Enter the name of the author:");
             var author = Console.ReadLine();
-            file.SetAuthor(author);
+            File.SetAuthor(author);
 
             Console.WriteLine("Enter the description:");
             var description = Console.ReadLine();
-            file.SetDescription(description);
+            File.SetDescription(description);
 
-            Console.WriteLine("Enter the tags (separated by commas):");
-            var tagsInput = Console.ReadLine();
-            var tags = tagsInput.Split(',').ToList();
-            file.SetTags(tags);
+            Console.WriteLine("Enter the Tags (separated by commas):");
+            var TagsInput = Console.ReadLine();
+            var Tags = TagsInput.Split(',').ToList();
+            File.SetTags(Tags);
 
-            var memento = new TextFileMemento(file);
-            file.AddMemento(memento);
+            var Memento = new TextFileMemento(File);
+            File.AddMemento(Memento);
 
-            file.SerializeToXml(filePath + ".xml");
+            File.SerializeToXml(FilePath + ".xml");
 
             Console.WriteLine("File created successfully.");
         }
 
         static void EditTextFile()
         {
-            Console.WriteLine("Enter the path and name of the file to edit:");
-            var filePath = Console.ReadLine();
+            Console.WriteLine("Enter the path and name of the File to edit:");
+            var FilePath = Console.ReadLine();
 
             try
             {
-                var file = TextFile.DeserializeFromXml(filePath + ".xml");
-                Console.WriteLine(file);
+                var File = TextFile.DeserializeFromXml(FilePath + ".xml");
+                Console.WriteLine(File);
 
                 Console.WriteLine("Enter the new content:");
-                var newContent = Console.ReadLine();
-                var previousContent = file.Content;
+                var NewContent = Console.ReadLine();
+                var previousContent = File.Content;
 
-                var memento = new TextFileMemento(file);
-                file.AddMemento(memento);
+                var Memento = new TextFileMemento(File);
+                File.AddMemento(Memento);
 
-                file.Content = newContent;
+                File.Content = NewContent;
 
                 Console.WriteLine("Enter the name of the author:");
                 var author = Console.ReadLine();
-                file.SetAuthor(author);
+                File.SetAuthor(author);
 
                 Console.WriteLine("Enter the description:");
                 var description = Console.ReadLine();
-                file.SetDescription(description);
+                File.SetDescription(description);
 
-                Console.WriteLine("Enter the tags (separated by commas):");
-                var tagsInput = Console.ReadLine();
-                var tags = tagsInput.Split(',').ToList();
-                file.SetTags(tags);
+                Console.WriteLine("Enter the Tags (separated by commas):");
+                var TagsInput = Console.ReadLine();
+                var Tags = TagsInput.Split(',').ToList();
+                File.SetTags(Tags);
 
-                file.SerializeToXml(filePath + ".xml");
+                File.SerializeToXml(FilePath + ".xml");
 
                 Console.WriteLine("File edited successfully.");
             }
@@ -143,28 +143,28 @@ namespace fourth_lab
 
         static void UndoTextFileChange()
         {
-            Console.WriteLine("Enter the path and name of the file to undo:");
-            var filePath = Console.ReadLine();
+            Console.WriteLine("Enter the path and name of the File to undo:");
+            var FilePath = Console.ReadLine();
 
             try
             {
-                var file = TextFile.DeserializeFromXml(filePath + ".xml");
-                var mementosCount = file.Mementos.Count;
-                if (mementosCount == 0)
+                var File = TextFile.DeserializeFromXml(FilePath + ".xml");
+                var MementosCount = File.Mementos.Count;
+                if (MementosCount == 0)
                 {
                     Console.WriteLine("No changes to undo.");
                     return;
                 }
 
-                var memento = file.Mementos.Last();
-                file.RemoveMemento(memento);
+                var Memento = File.Mementos.Last();
+                File.RemoveMemento(Memento);
 
-                file.Content = memento.Content;
-                file.SetAuthor(memento.Author);
-                file.SetDescription(memento.Description);
-                file.SetTags(memento.Tags);
+                File.Content = Memento.Content;
+                File.SetAuthor(Memento.Author);
+                File.SetDescription(Memento.Description);
+                File.SetTags(Memento.Tags);
 
-                file.SerializeToXml(filePath + ".xml");
+                File.SerializeToXml(FilePath + ".xml");
 
                 Console.WriteLine("Change undone successfully.");
             }
@@ -175,51 +175,51 @@ namespace fourth_lab
         }
 
 
-        public static void SaveMementos(TextFile file)
+        public static void SaveMementos(TextFile File)
         {
-            var mementos = file.Mementos;
-            var filePath = $"{file.FilePath}.mementos.xml";
+            var Mementos = File.Mementos;
+            var FilePath = $"{File.FilePath}.Mementos.xml";
             var serializer = new XmlSerializer(typeof(List<TextFileMemento>));
 
-            using (var writer = new StreamWriter(filePath))
+            using (var Writer = new StreamWriter(FilePath))
             {
-                serializer.Serialize(writer, mementos);
+                serializer.Serialize(Writer, Mementos);
             }
         }
 
-        public static List<TextFileMemento> LoadMementos(string filePath)
+        public static List<TextFileMemento> LoadMementos(string FilePath)
         {
             var serializer = new XmlSerializer(typeof(List<TextFileMemento>));
 
-            using (var reader = new StreamReader(filePath))
+            using (var Reader = new StreamReader(FilePath))
             {
-                return (List<TextFileMemento>)serializer.Deserialize(reader);
+                return (List<TextFileMemento>)serializer.Deserialize(Reader);
             }
         }
 
 
         static void SearchTextFiles()
         {
-            Console.WriteLine("Enter the directory to search in:");
-            var directoryPath = Console.ReadLine();
-            Console.WriteLine("Enter the keywords to search for (separated by commas):");
-            var keywordsInput = Console.ReadLine();
+            Console.WriteLine("Enter the Directory to search in:");
+            var DirectoryPath = Console.ReadLine();
+            Console.WriteLine("Enter the Keywords to search for (separated by commas):");
+            var KeywordsInput = Console.ReadLine();
 
-            var keywords = keywordsInput.Split(",");
+            var Keywords = KeywordsInput.Split(",");
 
-            var searcher = new TextFileSearcher();
-            var matchingFiles = searcher.SearchFiles(directoryPath, keywords);
+            var Searcher = new TextFileSearcher();
+            var matchingFiles = Searcher.SearchFiles(DirectoryPath, Keywords);
 
             if (!matchingFiles.Any())
             {
-                Console.WriteLine("No files found.");
+                Console.WriteLine("No Files found.");
                 return;
             }
 
-            Console.WriteLine("Matching files:");
-            foreach (var file in matchingFiles)
+            Console.WriteLine("Matching Files:");
+            foreach (var File in matchingFiles)
             {
-                Console.WriteLine(file);
+                Console.WriteLine(File);
             }
         }
     }
