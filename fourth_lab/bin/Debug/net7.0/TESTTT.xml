@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Content>A</Content>
+  <Tags />
+  <Mementos>
+    <TextFileMemento>
+      <Content>A</Content>
+      <Tags />
+    </TextFileMemento>
+  </Mementos>
+</TextFile>
